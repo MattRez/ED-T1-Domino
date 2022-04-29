@@ -1,6 +1,5 @@
 package br.edu.univas.main;
 
-import java.util.Random;
 import java.util.Scanner;
 
 import br.edu.univas.vo.*;
@@ -44,41 +43,102 @@ public class List {
 		return "...";
 	}
 	
-	public void addPiece(Piece piece) {
-		//TODO
-		//addPieceBegin()
-		//addPieceEnd()
+	public void addPiece(Piece piece, Scanner scan) {
+		Node node = new Node();
+		node.setPiece(piece);
+		if(isEmpty()) {
+			begin = node;
+			end = node;
+		} else {
+			System.out.println(":::Adicionar Peça:::");
+			System.out.println("1. Adicionar no Começo");
+			System.out.println("2. Adicionar no Final");
+			int opt = readInt(scan);
+			
+			switch (opt) {
+			case 1:
+				addPieceBegin(node);
+				break;
+			case 2:
+				addPieceEnd(node);
+				break;
+			}
+		}
 	}
 	
-	public Piece delPiece() {
+	private void addPieceBegin(Node node) {
+		node.setNext(begin);
+		begin = node;
+	}
+	
+	private void addPieceEnd(Node node) {
+		node.setPrev(end);
+		end = node;
+	}
+	
+	public Piece delPiece(Scanner scan) {
 		//TODO
-		//delPieceBegin()
-		//delPieceEnd()
-		//delPieceIndex()
+		
+		if(isEmpty()) {
+			System.out.println("Lista Vazia :)");
+		} else {
+			System.out.println(":::Remover Peça:::");
+			System.out.println("1. Remover no Começo");
+			System.out.println("2. Remover no Final");
+			System.out.println("3. Remover no Índice");
+			int opt = scan.nextInt();
+			
+			switch (opt) {
+			case 1:
+				delPieceBegin();
+				break;
+			case 2:
+				delPieceEnd();
+				break;
+			case 3:
+				delPieceIndex(scan);
+				break;
+			}
+		}
+		
+		
+		
+		delPieceBegin();
+		delPieceEnd();
+		delPieceIndex(scan);
 		return null;
 	}
 	
-	public Node pop(int num) {
-		// TODO
-		
+	private Node delPieceBegin() {
+		Node node = begin;
+		begin = begin.getNext();
+		return node;
+	}
+	
+	private Node delPieceEnd() {
+		Node node = end;
+		end = end.getPrev();
+		return node;
+	}
+	
+	private Node delPieceIndex(Scanner scan) {
+		System.out.println("Remover Peça no Índice: ");
+		Node current = runner(index(scan));
+		reattach(current);
+		return current;
+	}
+	
+	public void push(Node node) {// push = addPiedeEnd()
+		addPieceEnd(node);
+	}
+	
+	public Node pop(int num) {// pop = delPieceRandom()
 		Node current = runner(num);
-		
+		reattach(current);
 		return current;
 	}
 	
-	Node runner(int num) {
-		// TODO
-		int aux=0;
-		Node current = begin;
-		
-		while(aux != num) {
-			current = current.getNext();
-		}
-		
-		return current;
-	}
-	
-	//
+	// get set
 	
 	public Node getBegin() {
 		return begin;
@@ -99,7 +159,22 @@ public class List {
 		this.length = length;
 	}
 	
-	//
+	// misc
+	
+	void reattach(Node current) {// reconectar
+		current.getNext().setPrev(current.getPrev());
+		current.getPrev().setNext(current.getNext());
+	}
+	
+	Node runner(int num) {
+		int aux = 0;
+		Node current = begin;
+		
+		while(aux != num) {
+			current = current.getNext();
+		}
+		return current;
+	}
 	
 	boolean isEmpty() {
 		if(begin == null) {
@@ -108,8 +183,6 @@ public class List {
 			return false;
 		}
 	}
-	
-	//
 	
 	int index(Scanner scan) {
 		System.out.println("Por Favor, Digite o Índice: ");
