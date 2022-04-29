@@ -6,6 +6,7 @@ import br.edu.univas.vo.*;
 
 public class List {
 	
+	private String name;
 	private Node begin;
 	private Node end;
 	private int length;
@@ -35,12 +36,19 @@ public class List {
 	public String toString() {
 		// TODO
 		Node current = begin;
-		while(current.getNext() != null) {
-			System.out.println(
-					current.getPiece().toString());
-			current = current.getNext();
+		
+		System.out.println(name + ":");
+		
+		if(isEmpty()) {
+			System.out.println("Lista Vazia :)");
+		} else {
+			while(current != null) {
+				System.out.println(
+						current.getPiece().toString());
+				current = current.getNext();
+			}
 		}
-		return "...";
+		return "";
 	}
 	
 	public void addPiece(Piece piece, Scanner scan) {
@@ -76,8 +84,9 @@ public class List {
 		end = node;
 	}
 	
-	public Piece delPiece(Scanner scan) {
+	public Node delPiece(Scanner scan) {
 		//TODO
+		Node node = null;
 		
 		if(isEmpty()) {
 			System.out.println("Lista Vazia :)");
@@ -90,23 +99,17 @@ public class List {
 			
 			switch (opt) {
 			case 1:
-				delPieceBegin();
+				node = delPieceBegin();
 				break;
 			case 2:
-				delPieceEnd();
+				node = delPieceEnd();
 				break;
 			case 3:
-				delPieceIndex(scan);
+				node = delPieceIndex(scan);
 				break;
 			}
 		}
-		
-		
-		
-		delPieceBegin();
-		delPieceEnd();
-		delPieceIndex(scan);
-		return null;
+		return node;
 	}
 	
 	private Node delPieceBegin() {
@@ -140,6 +143,13 @@ public class List {
 	
 	// get set
 	
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public Node getBegin() {
 		return begin;
 	}
@@ -171,7 +181,9 @@ public class List {
 		Node current = begin;
 		
 		while(aux != num) {
-			current = current.getNext();
+			if(current.getNext() != null) {
+				current = current.getNext();
+			}
 		}
 		return current;
 	}

@@ -15,10 +15,9 @@ public class Piece {
 		
 		if(piece.a == a && piece.b == b) {
 			return true;
+		} else if(check(cross(piece))) {
+			return true;
 		} else {
-			if(check(cross(piece))) {
-				return true;
-			}
 			return false;
 		}
 	}
@@ -35,6 +34,7 @@ public class Piece {
 		this.b = b;
 	}
 	
+	// get set 
 	
 	public int getA() {
 		return a;
